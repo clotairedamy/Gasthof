@@ -42,8 +42,8 @@ export const highlights: Highlight[] = [
     to: '/restaurant',
   },
   {
-    title: 'Bar',
-    text: 'Holz, warmes Licht und ein gutes Glas. Hier entstehen Geschichten – und manchmal Freundschaften.',
+    title: 'Hausbar',
+    text: 'Holz, warmes Licht und ein gutes Glas – der schönste Ort, um einen Tag in den Bergen ausklingen zu lassen.',
     image: '/images/bar-1.jpg',
     to: '/restaurant',
   },

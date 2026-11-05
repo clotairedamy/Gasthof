@@ -2,8 +2,8 @@
   <NuxtLink :to="`/zimmer/${room.slug}`" class="room-card" data-cursor="Entdecken">
     <div v-reveal:image class="room-card__media">
       <img
-        :src="asset(room.images[0])"
-        :alt="`${room.name} – ${room.tagline}`"
+        :src="asset(cover.src)"
+        :alt="cover.alt"
         width="600"
         height="800"
         loading="lazy"
@@ -20,9 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Room } from '~/content/rooms'
+import { roomCover, type Room } from '~/content/rooms'
 
-defineProps<{ room: Room; index?: number }>()
+const props = defineProps<{ room: Room; index?: number }>()
+const cover = computed(() => roomCover(props.room))
 </script>
 
 <style scoped>

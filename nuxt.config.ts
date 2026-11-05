@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         {
           name: 'description',
           content:
-            'Gasthof Barlida (Lainacherwirt) – familiengeführte Unterkunft in Lainach, zwischen Mölltal-Gletscher und Großglockner. Zimmer, Suiten & Apartments, Restaurant, Bar und Terrasse.',
+            'Gasthof Barlida (Lainacherwirt) – familiengeführte Unterkunft in Lainach, zwischen Mölltal-Gletscher und Großglockner. Zimmer, Suiten & Apartments, Restaurant, Hausbar und Terrasse.',
         },
         { name: 'theme-color', content: '#16201b' },
         { property: 'og:site_name', content: 'Gasthof Barlida' },

@@ -36,9 +36,21 @@ test('no page presents a stock texture as a photo', () => {
   }
 })
 
-test('every room has a unique slug and at least one image', () => {
+test('no room is illustrated with stock textures or the family photo', () => {
+  for (const room of rooms) {
+    const wrong = room.images.filter((src) => STOCK.test(src) || src === FAMILY_PHOTO)
+    assert.deepEqual(wrong, [], room.slug)
+  }
+})
+
+test('apartment names are grammatical German (neuter: -es)', () => {
+  const names = rooms.map((r) => r.name)
+  assert.ok(!names.includes('Kleine Apartment'), 'Kleines Apartment')
+  assert.ok(!names.includes('Große Apartment'), 'Großes Apartment')
+})
+
+test('every room has a unique slug', () => {
   assert.equal(new Set(rooms.map((r) => r.slug)).size, rooms.length)
-  for (const room of rooms) assert.ok(room.images.length > 0, room.slug)
 })
 
 test('highlights each carry an image and a target', () => {

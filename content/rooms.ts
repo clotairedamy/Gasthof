@@ -4,8 +4,17 @@ export interface Room {
   tagline: string
   description: string[]
   features: string[]
+  /** Photos of this room only. Empty until real photos exist. */
   images: string[]
   highlight?: string
+}
+
+// Shown for a room that has no photos yet: the house itself, labelled as such.
+const FALLBACK = { src: '/images/hero.jpg', alt: 'Gasthof Barlida von außen' }
+
+export function roomCover(room: Room): { src: string; alt: string } {
+  const src = room.images[0]
+  return src ? { src, alt: `${room.name} – ${room.tagline}` } : FALLBACK
 }
 
 export const rooms: Room[] = [
@@ -54,11 +63,13 @@ export const rooms: Room[] = [
       'Jedes Zimmer verfügt über ein großes Doppelbett (160×200 cm und 180×200 cm) sowie einen Fernseher. Eines der Zimmer ist zusätzlich mit einem Kühlschrank und einem modern renovierten Badezimmer mit Dusche und WC ausgestattet.',
     ],
     features: ['2 Schlafzimmer', 'Doppelbetten (160×200 & 180×200)', 'TV', 'Kühlschrank', 'Renoviertes Badezimmer', '1. Stock'],
-    images: ['/images/rooms-hero.jpg', '/images/gallery-1.jpg', '/images/gallery-2.jpg'],
+    // No photos of Suite 4 yet. rooms-hero.jpg is a family photo and
+    // gallery-*.jpg are stock textures, so neither may stand in.
+    images: [],
   },
   {
     slug: 'kleine-apartment',
-    name: 'Kleine Apartment',
+    name: 'Kleines Apartment',
     tagline: 'Kompakter Rückzugsort für längere Aufenthalte',
     description: [
       'Unser Kleines Apartment ist der ideale Rückzugsort für Gäste, die länger bleiben möchten.',
@@ -69,7 +80,7 @@ export const rooms: Room[] = [
   },
   {
     slug: 'grosse-apartment',
-    name: 'Große Apartment',
+    name: 'Großes Apartment',
     tagline: 'Viel Platz für Familien und Gruppen',
     highlight: 'Am geräumigsten',
     description: [

@@ -4,7 +4,7 @@
       :title="room.name"
       :kicker="room.highlight || 'Zimmer'"
       :lead="room.tagline"
-      :image="room.images[0]"
+      :image="roomCover(room).src"
     />
 
     <section class="section">
@@ -30,7 +30,7 @@
           </div>
         </div>
 
-        <div class="room__gallery">
+        <div v-if="room.images.length" class="room__gallery">
           <img
             v-for="(img, i) in room.images"
             :key="i"
@@ -42,6 +42,12 @@
             v-reveal:image="(i % 2) * 120"
           />
         </div>
+        <div v-else class="room__pending on-dark">
+          <BrandMark class="room__pending-mark" />
+          <p class="room__pending-title">Fotos folgen in Kürze</p>
+          <p class="room__pending-text">Gerne beschreiben wir Ihnen {{ room.name }} persönlich – rufen Sie uns an.</p>
+          <a :href="site.phoneHref" class="btn btn--outline-light">{{ site.phone }}</a>
+        </div>
       </div>
     </section>
 
@@ -52,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { getRoom, rooms } from '~/content/rooms'
+import { getRoom, roomCover, rooms } from '~/content/rooms'
 import { site } from '~/content/site'
 
 const route = useRoute()
@@ -73,7 +79,7 @@ useSeoMeta({
   description: room.description[0],
   ogTitle: `${room.name} – Gasthof Barlida`,
   ogDescription: room.tagline,
-  ogImage: `${base}${room.images[0]}`,
+  ogImage: `${base}${roomCover(room).src}`,
 })
 
 useHead({
@@ -160,6 +166,38 @@ useHead({
 
 .room__gallery img:not(:first-child) {
   aspect-ratio: 3 / 4;
+}
+
+.room__pending {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  min-height: 28rem;
+  padding: var(--space-12) var(--space-8);
+  background: var(--ink);
+  color: var(--text-on-dark);
+  text-align: center;
+}
+
+.room__pending-mark {
+  width: 3.5rem;
+  color: var(--gold);
+}
+
+.room__pending-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: 300;
+  font-style: italic;
+}
+
+.room__pending-text {
+  max-width: 24rem;
+  margin: 0 0 var(--space-4);
+  color: var(--text-on-dark-muted);
 }
 
 @media (min-width: 900px) {

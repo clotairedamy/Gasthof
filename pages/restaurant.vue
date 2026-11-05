@@ -11,7 +11,7 @@
       <div class="container restaurant">
         <div class="restaurant__body">
           <p class="kicker">Das Restaurant</p>
-          <h2 id="restaurant-heading" v-split class="restaurant__title">Tradition am Tisch, <em>die Berge vor dem Fenster</em></h2>
+          <h2 id="restaurant-heading" v-split class="restaurant__title">Tradition am Tisch, <em>die Berge vor der Tür</em></h2>
           <p v-for="(p, i) in restaurant.description" :key="i" class="restaurant__text" :class="{ 'restaurant__text--lead': i === 0 }">{{ p }}</p>
           <p class="restaurant__text">{{ restaurant.offSeason }}</p>
 
@@ -46,7 +46,7 @@
     </ImageBand>
 
     <div class="section">
-      <ExperienceTabs :items="highlights" kicker="Mehr entdecken" title="Restaurant, Bar & Terrasse" :show-links="false" />
+      <ExperienceTabs :items="highlights" kicker="Mehr entdecken" title="Restaurant, Hausbar & Terrasse" :show-links="false" />
     </div>
 
     <section class="section section--alt" aria-label="Bilder aus dem Restaurant">

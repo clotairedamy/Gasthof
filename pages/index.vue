@@ -61,7 +61,7 @@
             </div>
             <div class="intro__fact">
               <dt>Plätze im Restaurant</dt>
-              <dd>50</dd>
+              <dd><span class="intro__approx">ca.</span> 50</dd>
             </div>
             <div class="intro__fact">
               <dt>Plätze auf der Terrasse</dt>
@@ -83,7 +83,7 @@
       />
     </div>
 
-    <!-- Restaurant band + Restaurant / Bar / Terrasse -->
+    <!-- Restaurant band + Restaurant / Hausbar / Terrasse -->
     <ImageBand
       image="/images/restaurant-1.jpg"
       label="Restaurant Lainacherwirt"
@@ -93,7 +93,7 @@
     </ImageBand>
 
     <div class="section">
-      <ExperienceTabs :items="highlights" kicker="Restaurant Lainacherwirt" title="Restaurant, Bar & Terrasse" />
+      <ExperienceTabs :items="highlights" kicker="Restaurant Lainacherwirt" title="Restaurant, Hausbar & Terrasse" />
     </div>
 
     <!-- About -->
@@ -210,7 +210,7 @@ const base = config.public.siteUrl as string
 useSeoMeta({
   title: 'Gasthof Barlida – Lainacherwirt',
   description:
-    'Familiengeführte Unterkunft in Lainach, zwischen Mölltal-Gletscher und Großglockner. Zimmer, Suiten & Apartments, Restaurant, Bar und Terrasse.',
+    'Familiengeführte Unterkunft in Lainach, zwischen Mölltal-Gletscher und Großglockner. Zimmer, Suiten & Apartments, Restaurant, Hausbar und Terrasse.',
   ogTitle: 'Gasthof Barlida – Lainacherwirt',
   ogDescription:
     'Authentisches Alpenerlebnis zwischen Mölltal-Gletscher und Großglockner.',
@@ -230,7 +230,7 @@ useHead({
         '@type': 'Hotel',
         name: site.legalName,
         description:
-          'Familiengeführte Unterkunft in Lainach, zwischen Mölltal-Gletscher und Großglockner, mit Zimmern, Suiten, Apartments, Restaurant, Bar und Terrasse.',
+          'Familiengeführte Unterkunft in Lainach, zwischen Mölltal-Gletscher und Großglockner, mit Zimmern, Suiten, Apartments, Restaurant, Hausbar und Terrasse.',
         image: [`${base}/images/hero.jpg`],
         telephone: site.phone,
         email: site.email,
@@ -524,6 +524,12 @@ useHead({
   font-weight: 300;
   line-height: 1;
   color: var(--text);
+}
+
+.intro__approx {
+  font-size: 0.4em;
+  font-style: italic;
+  color: var(--text-muted);
 }
 
 .intro__fact dt {

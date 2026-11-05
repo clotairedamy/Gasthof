@@ -35,7 +35,7 @@ export const nav: NavItem[] = [
 export const promises: string[] = [
   'Familiengeführt',
   'Mitten in den österreichischen Alpen',
-  'Restaurant, Bar & Terrasse',
+  'Restaurant, Hausbar & Terrasse',
   'Zwischen Mölltal-Gletscher und Großglockner',
   'Nahe den Lienzer Dolomiten',
   'Direkt beim Gastgeber anfragen',
