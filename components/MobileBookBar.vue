@@ -1,12 +1,14 @@
 <template>
   <div class="book-bar on-dark">
-    <a :href="site.phoneHref" class="book-bar__btn">Anrufen</a>
-    <a :href="site.emailHref" class="book-bar__btn book-bar__btn--primary">Anfrage senden</a>
+    <a :href="site.phoneHref" class="book-bar__btn">{{ t.ui.call }}</a>
+    <a :href="site.emailHref" class="book-bar__btn book-bar__btn--primary">{{ t.ui.sendInquiry }}</a>
   </div>
 </template>
 
 <script setup lang="ts">
 import { site } from '~/content/site'
+
+const t = useMessages()
 </script>
 
 <style scoped>

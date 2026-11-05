@@ -1,35 +1,44 @@
 <template>
-  <div class="error">
-    <div class="container error__inner">
-      <p class="kicker">Fehler {{ error?.statusCode || 500 }}</p>
-      <h1 class="error__title">Diese Seite wurde nicht gefunden</h1>
-      <p class="error__text">Die gesuchte Seite existiert leider nicht (mehr).</p>
-      <NuxtLink to="/" class="btn btn--primary">Zur Startseite</NuxtLink>
+  <NuxtLayout>
+    <div class="error">
+      <div class="container error__inner">
+        <p class="kicker">{{ t.error.code }} {{ error?.statusCode || 500 }}</p>
+        <h1 class="error__title">{{ t.error.title }}</h1>
+        <p class="error__text">{{ t.error.text }}</p>
+        <NuxtLinkLocale to="/" class="btn btn--primary">{{ t.error.home }}</NuxtLinkLocale>
+      </div>
     </div>
-  </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ error?: { statusCode?: number; message?: string } }>()
+defineProps<{ error?: { statusCode?: number; message?: string } }>()
+
+const t = useMessages()
+
+// No photo behind the header here, so keep it solid while this page shows.
+const headerSolid = useState('header-solid', () => false)
+headerSolid.value = true
+onBeforeUnmount(() => {
+  headerSolid.value = false
+})
 
 useSeoMeta({
-  title: 'Seite nicht gefunden',
-  description: 'Die gesuchte Seite wurde nicht gefunden.',
+  title: () => t.value.error.seoTitle,
+  description: () => t.value.error.seoDescription,
 })
 
 useHead({
   meta: [{ name: 'robots', content: 'noindex' }],
 })
-
-void props
 </script>
 
 <style scoped>
 .error {
-  min-height: 70vh;
+  min-height: 80vh;
   display: flex;
   align-items: center;
-  padding-block: var(--space-24);
+  padding-block: calc(var(--header-h) + var(--space-16)) var(--space-24);
 }
 
 .error__inner {
@@ -39,6 +48,7 @@ void props
 
 .error__title {
   font-size: var(--text-4xl);
+  font-weight: 300;
 }
 
 .error__text {

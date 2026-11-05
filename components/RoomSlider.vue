@@ -6,14 +6,14 @@
         <h2 :id="headingId" v-split class="slider__title">{{ title }}</h2>
       </div>
       <div class="slider__controls">
-        <NuxtLink v-if="moreTo" :to="moreTo" class="link-line">{{ moreLabel }}</NuxtLink>
+        <NuxtLinkLocale v-if="moreTo" :to="moreTo" class="link-line">{{ moreLabel }}</NuxtLinkLocale>
         <div class="slider__arrows">
           <button type="button" class="slider__arrow" :disabled="atStart" @click="step(-1)">
-            <span class="sr-only">Vorheriges Zimmer</span>
+            <span class="sr-only">{{ t.ui.previousRoom }}</span>
             <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 12H4m0 0l6-6m-6 6l6 6" /></svg>
           </button>
           <button type="button" class="slider__arrow" :disabled="atEnd" @click="step(1)">
-            <span class="sr-only">Nächstes Zimmer</span>
+            <span class="sr-only">{{ t.ui.nextRoom }}</span>
             <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 12h16m0 0l-6-6m6 6l-6 6" /></svg>
           </button>
         </div>
@@ -29,16 +29,17 @@
 </template>
 
 <script setup lang="ts">
-import type { Room } from '~/content/rooms'
+import type { LocalizedRoom } from '~/composables/useRooms'
 
 defineProps<{
-  rooms: Room[]
+  rooms: LocalizedRoom[]
   kicker: string
   title: string
   moreTo?: string
   moreLabel?: string
 }>()
 
+const t = useMessages()
 const headingId = useId()
 const track = ref<HTMLUListElement>()
 const atStart = ref(true)

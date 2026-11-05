@@ -57,7 +57,7 @@
           :hidden="i !== active"
         >
           <p class="experience__text">{{ item.text }}</p>
-          <NuxtLink v-if="showLinks" :to="item.to" class="link-line">Mehr erfahren<span class="sr-only">: {{ item.title }}</span></NuxtLink>
+          <NuxtLinkLocale v-if="showLinks" :to="item.to" class="link-line">{{ t.ui.learnMore }}<span class="sr-only">: {{ item.title }}</span></NuxtLinkLocale>
         </div>
       </div>
     </div>
@@ -78,6 +78,7 @@ const props = withDefaults(
   { showLinks: true },
 )
 
+const t = useMessages()
 const uid = useId()
 const headingId = `${uid}-heading`
 const active = ref(0)

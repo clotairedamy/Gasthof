@@ -1,9 +1,9 @@
 <template>
   <div>
     <PageHero
-      title="Kontakt"
-      kicker="Anfahrt & Buchung"
-      lead="Rufen Sie uns an oder schreiben Sie uns – wir helfen Ihnen gerne bei der Planung Ihres Aufenthalts."
+      :title="t.contact.title"
+      :kicker="t.contact.kicker"
+      :lead="t.contact.lead"
       image="/images/terrace-1.jpg"
     />
 
@@ -11,21 +11,21 @@
       <div class="container contact">
         <div class="contact__cards">
           <article class="contact__card">
-            <h2 class="contact__heading">Adresse</h2>
-            <p>{{ site.address }}</p>
-            <p class="contact__muted">{{ site.region }}</p>
+            <h2 class="contact__heading">{{ t.contact.address }}</h2>
+            <p>{{ site.street }}, {{ site.postalCode }} {{ site.locality }}, {{ t.contact.country }}</p>
+            <p class="contact__muted">{{ t.footer.tagline }}</p>
           </article>
 
           <article class="contact__card">
-            <h2 class="contact__heading">Telefon</h2>
+            <h2 class="contact__heading">{{ t.contact.phone }}</h2>
             <p><a :href="site.phoneHref">{{ site.phone }}</a></p>
-            <p class="contact__muted">Rufen Sie uns an, um direkt zu buchen.</p>
+            <p class="contact__muted">{{ t.contact.phoneNote }}</p>
           </article>
 
           <article class="contact__card">
-            <h2 class="contact__heading">E-Mail</h2>
+            <h2 class="contact__heading">{{ t.contact.email }}</h2>
             <p><a :href="site.emailHref">{{ site.email }}</a></p>
-            <p class="contact__muted">Wir antworten so schnell wie möglich.</p>
+            <p class="contact__muted">{{ t.contact.emailNote }}</p>
           </article>
         </div>
 
@@ -33,13 +33,13 @@
           <a
             v-reveal:image
             class="contact__map-link"
-            data-cursor="Route"
-            href="https://www.google.com/maps/search/?api=1&query=Lainach+80+9833+Rangersdorf+Austria"
+            :data-cursor="t.ui.cursorRoute"
+            :href="site.mapsUrl"
             target="_blank"
             rel="noopener"
           >
-            <img :src="asset('/images/hero.jpg')" alt="Anfahrt zum Gasthof Barlida – in Google Maps öffnen" width="960" height="600" loading="lazy" />
-            <span class="contact__map-cta">Route in Google Maps öffnen</span>
+            <img :src="asset('/images/hero.jpg')" :alt="t.contact.mapAlt" width="960" height="600" loading="lazy" />
+            <span class="contact__map-cta">{{ t.contact.mapCta }}</span>
           </a>
         </div>
       </div>
@@ -50,18 +50,12 @@
 <script setup lang="ts">
 import { site } from '~/content/site'
 
-const config = useRuntimeConfig()
-const base = config.public.siteUrl as string
+const t = useMessages()
 
-useSeoMeta({
-  title: 'Kontakt | Gasthof Barlida',
-  description: `Kontakt zum Gasthof Barlida – ${site.address}. Telefon: ${site.phone}. E-Mail: ${site.email}.`,
-  ogTitle: 'Kontakt – Gasthof Barlida',
-  ogImage: `${base}/images/terrace-1.jpg`,
-})
-
-useHead({
-  link: [{ rel: 'canonical', href: `${base}/kontakt` }],
+usePageSeo({
+  title: t.value.contact.seoTitle,
+  description: t.value.contact.seoDescription,
+  image: '/images/terrace-1.jpg',
 })
 </script>
 

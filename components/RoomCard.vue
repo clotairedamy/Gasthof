@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="`/zimmer/${room.slug}`" class="room-card" data-cursor="Entdecken">
+  <NuxtLinkLocale :to="`/zimmer/${room.slug}`" class="room-card" :data-cursor="t.ui.cursorDiscover">
     <div v-reveal:image class="room-card__media">
       <img
         :src="asset(cover.src)"
@@ -14,16 +14,17 @@
       <p v-if="index !== undefined" class="room-card__num" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</p>
       <h3 class="room-card__name">{{ room.name }}</h3>
       <p class="room-card__tagline">{{ room.tagline }}</p>
-      <span class="room-card__more">Entdecken</span>
+      <span class="room-card__more">{{ t.ui.discover }}</span>
     </div>
-  </NuxtLink>
+  </NuxtLinkLocale>
 </template>
 
 <script setup lang="ts">
-import { roomCover, type Room } from '~/content/rooms'
+import type { LocalizedRoom } from '~/composables/useRooms'
 
-const props = defineProps<{ room: Room; index?: number }>()
-const cover = computed(() => roomCover(props.room))
+const props = defineProps<{ room: LocalizedRoom; index?: number }>()
+const t = useMessages()
+const cover = computed(() => roomCover(props.room, t.value.rooms.houseAlt))
 </script>
 
 <style scoped>
@@ -55,6 +56,10 @@ const cover = computed(() => roomCover(props.room))
 
 .room-card:hover .room-card__media img {
   transform: scale(1.06);
+}
+
+.room-card__badge:empty {
+  display: none;
 }
 
 .room-card__badge {

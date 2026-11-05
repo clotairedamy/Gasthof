@@ -42,6 +42,7 @@ Build-time switches (environment variables):
 | --- | --- | --- |
 | `NUXT_APP_BASE_URL` | `/Gasthof/` | remove (root domain) |
 | `NUXT_PUBLIC_SITE_URL` | `https://clotairedamy.github.io/Gasthof` | real domain |
+| `NUXT_PUBLIC_I18N_BASE_URL` | `https://clotairedamy.github.io` (origin only) | real domain |
 | `NUXT_PUBLIC_INDEXABLE` | `false` → every page `noindex, nofollow` | `true` |
 
 Images in `public/` must go through `asset('/images/…')` so they pick up the
@@ -79,7 +80,11 @@ by `scripts/prepare-images.py` into `public/images/`.
 - Suite 4 has no photos of its own: its images are the family photo
   (`rooms-hero.jpg`) and two stock textures. `gallery-1…6.jpg` are template
   stock textures, not the house — keep them out of `content/gallery.ts`.
-- The site is currently **German-only**. The crawl also captured English,
-  Italian, Dutch and Romanian translations if i18n is wanted later.
+- Five languages: German at `/` (default), English `/en/`, Italian `/it/`,
+  Dutch `/nl/`, Romanian `/ro/`. Copy for all of them lives in
+  `content/locales/<code>.ts`; `de.ts` is the master and the others are typed
+  against it, so a missing string fails the typecheck and `pnpm test`.
+  Wording that existed on cocohouses.com starts from its official translations;
+  new copy was translated for this site and should get a native read-through.
 - Online booking is not wired up; the "Buchen" CTA links to the phone number.
 - Fonts load from Google Fonts (Cormorant Garamond + Jost).

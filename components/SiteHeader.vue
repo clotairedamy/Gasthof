@@ -1,5 +1,5 @@
 <template>
-  <header class="header" :class="{ 'header--solid': solid, 'header--hidden': hidden, 'on-dark': !solid }">
+  <header class="header" :class="{ 'header--solid': isSolid, 'header--hidden': hidden, 'on-dark': !isSolid }">
     <div class="header__bar">
       <button
         ref="toggleEl"
@@ -10,22 +10,23 @@
         @click="openMenu"
       >
         <span class="header__toggle-lines" aria-hidden="true"><span></span><span></span></span>
-        <span class="header__toggle-label">Menü</span>
+        <span class="header__toggle-label">{{ t.ui.menu }}</span>
       </button>
 
-      <NuxtLink to="/" class="header__brand" aria-label="Gasthof Barlida – Startseite">
+      <NuxtLinkLocale to="/" class="header__brand" :aria-label="t.ui.homeLink">
         <BrandMark class="header__mark" />
         <span class="header__brand-name">Gasthof Barlida</span>
         <span class="header__brand-sub">Lainacherwirt</span>
-      </NuxtLink>
+      </NuxtLinkLocale>
 
       <div class="header__actions">
-        <a :href="site.phoneHref" class="header__phone" :aria-label="`Anrufen: ${site.phone}`">
+        <LangSwitcher class="header__lang" />
+        <a :href="site.phoneHref" class="header__phone" :aria-label="`${t.ui.callNumber} ${site.phone}`">
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
           </svg>
         </a>
-        <a :href="site.phoneHref" class="btn header__cta" :class="solid ? 'btn--primary' : 'btn--outline-light'">Anfragen</a>
+        <a :href="site.phoneHref" class="btn header__cta" :class="isSolid ? 'btn--primary' : 'btn--outline-light'">{{ t.ui.inquire }}</a>
       </div>
     </div>
 
@@ -37,39 +38,40 @@
         class="menu on-dark"
         role="dialog"
         aria-modal="true"
-        aria-label="Menü"
+        :aria-label="t.ui.menuDialog"
         @keydown="onMenuKeydown"
       >
         <div class="menu__bar">
           <button ref="closeEl" type="button" class="header__toggle" @click="closeMenu">
             <span class="header__toggle-lines header__toggle-lines--x" aria-hidden="true"><span></span><span></span></span>
-            <span class="header__toggle-label">Schließen</span>
+            <span class="header__toggle-label">{{ t.ui.close }}</span>
           </button>
-          <NuxtLink to="/" class="header__brand" aria-label="Gasthof Barlida – Startseite" @click="closeMenu">
+          <NuxtLinkLocale to="/" class="header__brand" :aria-label="t.ui.homeLink" @click="closeMenu">
             <BrandMark class="header__mark" />
             <span class="header__brand-name">Gasthof Barlida</span>
             <span class="header__brand-sub">Lainacherwirt</span>
-          </NuxtLink>
+          </NuxtLinkLocale>
           <span aria-hidden="true"></span>
         </div>
 
         <div class="menu__body">
-          <nav class="menu__nav" aria-label="Hauptnavigation">
+          <nav class="menu__nav" :aria-label="t.ui.mainNav">
             <ul class="menu__list">
               <li v-for="(item, i) in menuItems" :key="item.to" class="menu__item" :style="{ '--i': i }">
-                <NuxtLink :to="item.to" class="menu__link" @click="closeMenu">
+                <NuxtLinkLocale :to="item.to" class="menu__link" @click="closeMenu">
                   <span class="menu__num" aria-hidden="true">{{ String(i + 1).padStart(2, '0') }}</span>
                   {{ item.label }}
-                </NuxtLink>
+                </NuxtLinkLocale>
               </li>
             </ul>
+            <LangSwitcher class="menu__lang" />
           </nav>
 
           <aside class="menu__aside">
             <img class="menu__img" :src="asset('/images/hero.jpg')" alt="" width="640" height="427" loading="lazy" />
             <div class="menu__contact">
-              <p class="kicker">Kontakt</p>
-              <address class="menu__address">{{ site.address }}</address>
+              <p class="kicker">{{ t.ui.contact }}</p>
+              <address class="menu__address">{{ site.street }}, {{ site.postalCode }} {{ site.locality }}, {{ t.contact.country }}</address>
               <p><a :href="site.phoneHref">{{ site.phone }}</a></p>
               <p><a :href="site.emailHref">{{ site.email }}</a></p>
               <p class="menu__social">
@@ -91,12 +93,19 @@ const route = useRoute()
 const open = ref(false)
 const solid = ref(false)
 const hidden = ref(false)
+// Pages without a photo hero (the error page) force the solid style.
+const forceSolid = useState('header-solid', () => false)
+const isSolid = computed(() => solid.value || forceSolid.value)
 let lastY = 0
 const toggleEl = ref<HTMLButtonElement>()
 const closeEl = ref<HTMLButtonElement>()
 const menuEl = ref<HTMLElement>()
 
-const menuItems = [{ label: 'Startseite', to: '/' }, ...nav]
+const t = useMessages()
+const menuItems = computed(() => [
+  { label: t.value.ui.home, to: '/' },
+  ...nav.map((item) => ({ label: t.value.nav[item.key], to: item.to })),
+])
 
 // Solid once off the hero; tucked away while scrolling down, back on the
 // way up.
@@ -326,6 +335,15 @@ watch(() => route.path, () => {
   gap: var(--space-6);
 }
 
+.header__lang {
+  display: none;
+}
+
+.menu__lang {
+  margin-top: var(--space-8);
+  gap: var(--space-3);
+}
+
 .header__phone {
   display: inline-flex;
   align-items: center;
@@ -477,6 +495,12 @@ watch(() => route.path, () => {
 
   .header__cta {
     display: inline-flex;
+  }
+}
+
+@media (min-width: 1100px) {
+  .header__lang {
+    display: flex;
   }
 }
 

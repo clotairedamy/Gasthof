@@ -25,6 +25,13 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Safety net: decorative motion must never widen the layout viewport
+   (mobile browsers zoom out to fit). `clip` keeps position: sticky working. */
+html,
+body {
+  overflow-x: clip;
+}
+
 body.is-locked {
   overflow: hidden;
 }
@@ -304,6 +311,7 @@ a:hover {
 /* Image curtain (v-reveal:image): the frame wipes open while the photo
    inside settles from a slight zoom. */
 .reveal-img {
+  overflow: hidden;
   clip-path: inset(100% 0 0 0);
   transition: clip-path 1.4s var(--ease-expo) var(--reveal-delay, 0ms);
 }
@@ -312,8 +320,9 @@ a:hover {
   clip-path: inset(0 100% 0 0);
 }
 
-.reveal-img:not(img) img,
-img.reveal-img {
+/* Only the photo inside a frame zooms: an <img> cannot clip its own
+   transform, and a scaled one widens the page on phones. */
+.reveal-img:not(img) img {
   transform: scale(1.3);
   transition: transform 2s var(--ease-expo) var(--reveal-delay, 0ms);
 }
@@ -322,8 +331,7 @@ img.reveal-img {
   clip-path: inset(0 0 0 0);
 }
 
-.reveal-img.is-visible:not(img) img,
-img.reveal-img.is-visible {
+.reveal-img.is-visible:not(img) img {
   transform: none;
 }
 

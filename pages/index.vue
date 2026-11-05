@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- Hero -->
-    <section class="hero on-dark" aria-label="Willkommen">
+    <section class="hero on-dark" :aria-label="t.home.heroLabel">
       <div class="hero__media">
         <img
           class="hero__bg"
@@ -15,7 +15,7 @@
       <div class="hero__scrim" aria-hidden="true"></div>
       <div class="hero__content">
         <BrandMark class="hero__mark" />
-        <p class="hero__kicker">Lainach · Mölltal · Kärnten</p>
+        <p class="hero__kicker">{{ t.home.heroKicker }}</p>
         <h1 class="hero__title">
           <span class="sr-only">Gasthof Barlida</span>
           <span class="hero__letters" aria-hidden="true">
@@ -24,47 +24,41 @@
             </span>
           </span>
         </h1>
-        <p class="hero__subtitle">Authentisches Alpenerlebnis zwischen Mölltal-Gletscher und Großglockner</p>
+        <p class="hero__subtitle">{{ t.home.heroSubtitle }}</p>
         <div class="hero__actions">
-          <NuxtLink to="/zimmer" class="btn btn--light">Zimmer entdecken</NuxtLink>
-          <a :href="site.phoneHref" class="btn btn--outline-light">Anfragen</a>
+          <NuxtLinkLocale to="/zimmer" class="btn btn--light">{{ t.home.heroRooms }}</NuxtLinkLocale>
+          <a :href="site.phoneHref" class="btn btn--outline-light">{{ t.ui.inquire }}</a>
         </div>
       </div>
       <a href="#willkommen" class="hero__scroll">
-        <span>Entdecken</span>
+        <span>{{ t.ui.discover }}</span>
         <span class="hero__scroll-line" aria-hidden="true"></span>
       </a>
     </section>
 
-    <TrustMarquee :items="promises" />
+    <TrustMarquee :items="t.promises" />
 
     <!-- Intro -->
     <section id="willkommen" class="section intro" aria-labelledby="intro-heading">
       <img class="intro__texture" :src="asset('/images/gallery-3.jpg')" alt="" width="1920" height="1047" loading="lazy" />
       <div class="container intro__inner">
-        <p v-reveal class="kicker">Willkommen</p>
+        <p v-reveal class="kicker">{{ t.home.introKicker }}</p>
         <h2 id="intro-heading" v-split class="display intro__title">
-          Lassen Sie die Berge sprechen. <em>Und hören Sie, wie still es wird.</em>
+          {{ t.home.introTitleLead }} <em>{{ t.home.introTitleAccent }}</em>
         </h2>
         <div class="intro__body">
-          <p v-reveal="100" class="intro__lead">
-            Entdecken Sie den Charme des Gasthofs Barlida – eine einladende Unterkunft
-            inmitten der majestätischen Kulisse der österreichischen Alpen, zwischen den
-            Gletschern des Mölltals und dem Großglockner, nur einen Steinwurf von den
-            Lienzer Dolomiten entfernt. Hier bietet jede Jahreszeit einzigartige und
-            unvergessliche Erlebnisse.
-          </p>
+          <p v-reveal="100" class="intro__lead">{{ t.home.introText }}</p>
           <dl v-reveal="200" class="intro__facts">
             <div class="intro__fact">
-              <dt>Zimmer, Suiten &amp; Apartments</dt>
+              <dt>{{ t.home.factRooms }}</dt>
               <dd>{{ rooms.length }}</dd>
             </div>
             <div class="intro__fact">
-              <dt>Plätze im Restaurant</dt>
-              <dd><span class="intro__approx">ca.</span> 50</dd>
+              <dt>{{ t.home.factRestaurant }}</dt>
+              <dd><span class="intro__approx">{{ t.home.approx }}</span> 50</dd>
             </div>
             <div class="intro__fact">
-              <dt>Plätze auf der Terrasse</dt>
+              <dt>{{ t.home.factTerrace }}</dt>
               <dd>20</dd>
             </div>
           </dl>
@@ -76,40 +70,40 @@
     <div class="section section--alt">
       <RoomSlider
         :rooms="rooms"
-        kicker="Übernachten"
-        title="Zimmer, Suiten & Apartments"
+        :kicker="t.home.roomsKicker"
+        :title="t.home.roomsTitle"
         more-to="/zimmer"
-        more-label="Alle Zimmer"
+        :more-label="t.ui.allRooms"
       />
     </div>
 
     <!-- Restaurant band + Restaurant / Hausbar / Terrasse -->
     <ImageBand
       image="/images/restaurant-1.jpg"
-      label="Restaurant Lainacherwirt"
-      kicker="Genuss im Haus"
+      :label="t.restaurant.name"
+      :kicker="t.home.bandRestaurantKicker"
     >
-      Hier entstehen Geschichten – bei einem guten Glas und herzlicher Gastfreundschaft.
+      {{ t.home.bandRestaurantQuote }}
     </ImageBand>
 
     <div class="section">
-      <ExperienceTabs :items="highlights" kicker="Restaurant Lainacherwirt" title="Restaurant, Hausbar & Terrasse" />
+      <ExperienceTabs :items="highlights" :kicker="t.restaurant.name" :title="t.home.experienceTitle" />
     </div>
 
     <!-- About -->
     <section class="story section--ink on-dark" aria-labelledby="about-heading">
       <div v-reveal:image.left class="story__media">
-        <img :src="asset('/images/about-1.jpg')" alt="Die Gastgeberfamilie vor verschneiten Berggipfeln" width="1200" height="1600" loading="lazy" />
+        <img :src="asset('/images/about-1.jpg')" :alt="t.home.storyImageAlt" width="1200" height="1600" loading="lazy" />
       </div>
       <div class="story__body">
         <div v-reveal class="story__inner">
-          <p class="kicker">Über uns</p>
-          <h2 id="about-heading" class="story__title">Ein Ort mit <em>Herz</em> in den Bergen</h2>
-          <p class="story__text">{{ about.intro }}</p>
+          <p class="kicker">{{ t.home.storyKicker }}</p>
+          <h2 id="about-heading" class="story__title">{{ t.home.storyTitleLead }} <em>{{ t.home.storyTitleAccent }}</em> {{ t.home.storyTitleTail }}</h2>
+          <p class="story__text">{{ t.about.intro }}</p>
           <blockquote class="story__quote">
-            <p>„Wir bieten mehr als nur Unterkunft – wir schenken Wärme, Aufmerksamkeit und eine schöne Erinnerung inmitten der Natur.“</p>
+            <p>{{ t.home.storyQuote }}</p>
           </blockquote>
-          <NuxtLink to="/ueber-uns" class="link-line">Unsere Geschichte</NuxtLink>
+          <NuxtLinkLocale to="/ueber-uns" class="link-line">{{ t.home.storyLink }}</NuxtLinkLocale>
         </div>
       </div>
     </section>
@@ -119,17 +113,17 @@
       <div class="container">
         <div class="gallery-head">
           <div>
-            <p v-reveal class="kicker">Galerie</p>
-            <h2 id="gallery-heading" v-split class="gallery-head__title">Eindrücke aus dem Haus</h2>
+            <p v-reveal class="kicker">{{ t.home.galleryKicker }}</p>
+            <h2 id="gallery-heading" v-split class="gallery-head__title">{{ t.home.galleryTitle }}</h2>
           </div>
           <div class="gallery-head__links">
-            <NuxtLink to="/galerie" class="link-line">Zur Galerie</NuxtLink>
+            <NuxtLinkLocale to="/galerie" class="link-line">{{ t.home.galleryLink }}</NuxtLinkLocale>
             <a :href="site.social.instagram" class="link-line" target="_blank" rel="noopener">Instagram</a>
           </div>
         </div>
         <ul class="mosaic">
           <li v-for="(img, i) in mosaic" :key="img.src" class="mosaic__item">
-            <img v-reveal:image="i * 90" :src="asset(img.src)" :alt="img.alt" width="800" height="800" loading="lazy" />
+            <img v-reveal:image="i * 90" :src="asset(img.src)" :alt="galleryAlt(img.src)" width="800" height="800" loading="lazy" />
           </li>
         </ul>
       </div>
@@ -138,42 +132,42 @@
     <!-- Mountains band -->
     <ImageBand
       image="/images/hero.jpg"
-      label="Ankommen"
-      kicker="Ankommen"
+      :label="t.home.bandArriveKicker"
+      :kicker="t.home.bandArriveKicker"
       position="center 18%"
       cta-to="/kontakt"
-      cta-label="Aufenthalt planen"
+      :cta-label="t.home.bandArriveCta"
     >
-      Frische Bergluft, weite Wälder – und ein Zuhause auf Zeit.
+      {{ t.home.bandArriveQuote }}
     </ImageBand>
 
     <!-- Location -->
     <section class="section section--alt" aria-labelledby="location-heading">
       <div class="container location">
         <div v-reveal:image class="location__media">
-          <img :src="asset('/images/terrace-1.jpg')" alt="Die Terrasse des Gasthofs mit Blumen und Holzschnitzerei" width="1600" height="1066" loading="lazy" />
+          <img :src="asset('/images/terrace-1.jpg')" :alt="t.home.locationImageAlt" width="1600" height="1066" loading="lazy" />
         </div>
         <div v-reveal class="location__body">
-          <p class="kicker">Anreise</p>
-          <h2 id="location-heading" v-split class="location__title">Lainach, im Herzen des Mölltals</h2>
+          <p class="kicker">{{ t.home.locationKicker }}</p>
+          <h2 id="location-heading" v-split class="location__title">{{ t.home.locationTitle }}</h2>
           <address class="location__address">
             {{ site.legalName }}<br />
-            Lainach 80, 9833 Rangersdorf<br />
-            Kärnten, Österreich
+            {{ site.street }}, {{ site.postalCode }} {{ site.locality }}<br />
+            {{ t.ui.region }}
           </address>
           <dl class="location__contact">
             <div>
-              <dt>Telefon</dt>
+              <dt>{{ t.home.phone }}</dt>
               <dd><a :href="site.phoneHref">{{ site.phone }}</a></dd>
             </div>
             <div>
-              <dt>E-Mail</dt>
+              <dt>{{ t.home.email }}</dt>
               <dd><a :href="site.emailHref">{{ site.email }}</a></dd>
             </div>
           </dl>
           <div class="location__actions">
-            <a :href="mapsUrl" class="btn btn--primary" target="_blank" rel="noopener">Route planen</a>
-            <a :href="site.phoneHref" class="btn btn--ghost">Anrufen</a>
+            <a :href="site.mapsUrl" class="btn btn--primary" target="_blank" rel="noopener">{{ t.home.route }}</a>
+            <a :href="site.phoneHref" class="btn btn--ghost">{{ t.ui.call }}</a>
           </div>
         </div>
       </div>
@@ -182,15 +176,18 @@
 </template>
 
 <script setup lang="ts">
-import { promises, site } from '~/content/site'
-import { rooms } from '~/content/rooms'
-import { highlights } from '~/content/restaurant'
-import { about } from '~/content/about'
+import { site } from '~/content/site'
+import { highlightFacts } from '~/content/restaurant'
 import { gallery } from '~/content/gallery'
 
-const titleWords = ['Gasthof', 'Barlida']
+const t = useMessages()
+const rooms = useRooms()
+const galleryAlt = useGalleryAlt()
+const highlights = computed(() =>
+  highlightFacts.map((fact, i) => ({ ...fact, ...t.value.restaurant.highlights[i]! })),
+)
 
-const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Lainach+80+9833+Rangersdorf+Austria'
+const titleWords = ['Gasthof', 'Barlida']
 
 const mosaicSources = [
   '/images/restaurant-1.jpg',
@@ -204,24 +201,16 @@ const mosaic = mosaicSources
   .map((src) => gallery.find((img) => img.src === src))
   .filter((img) => img !== undefined)
 
-const config = useRuntimeConfig()
-const base = config.public.siteUrl as string
+const base = useRuntimeConfig().public.siteUrl as string
 
-useSeoMeta({
-  title: 'Gasthof Barlida – Lainacherwirt',
-  description:
-    'Familiengeführte Unterkunft in Lainach, zwischen Mölltal-Gletscher und Großglockner. Zimmer, Suiten & Apartments, Restaurant, Hausbar und Terrasse.',
-  ogTitle: 'Gasthof Barlida – Lainacherwirt',
-  ogDescription:
-    'Authentisches Alpenerlebnis zwischen Mölltal-Gletscher und Großglockner.',
-  ogImage: `${base}/images/hero.jpg`,
-  ogUrl: `${base}/`,
-  ogType: 'website',
-  twitterCard: 'summary_large_image',
+usePageSeo({
+  title: t.value.home.seoTitle,
+  description: t.value.home.seoDescription,
+  ogDescription: t.value.home.ogDescription,
+  image: '/images/hero.jpg',
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: `${base}/` }],
   script: [
     {
       type: 'application/ld+json',
@@ -229,16 +218,15 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'Hotel',
         name: site.legalName,
-        description:
-          'Familiengeführte Unterkunft in Lainach, zwischen Mölltal-Gletscher und Großglockner, mit Zimmern, Suiten, Apartments, Restaurant, Hausbar und Terrasse.',
+        description: t.value.meta.hotelDescription,
         image: [`${base}/images/hero.jpg`],
         telephone: site.phone,
         email: site.email,
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'Lainach 80',
-          postalCode: '9833',
-          addressLocality: 'Rangersdorf',
+          streetAddress: site.street,
+          postalCode: site.postalCode,
+          addressLocality: site.locality,
           addressCountry: 'AT',
         },
       }),

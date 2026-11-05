@@ -4,33 +4,33 @@
       <span>Gasthof Barlida <em>·</em> Lainacherwirt <em>·</em> Gasthof Barlida <em>·</em> Lainacherwirt <em>·</em></span>
     </div>
     <div class="container footer__top">
-      <NuxtLink to="/" class="footer__brand" aria-label="Gasthof Barlida – Startseite">
+      <NuxtLinkLocale to="/" class="footer__brand" :aria-label="t.ui.homeLink">
         <BrandMark class="footer__mark" />
         <span class="footer__name">Gasthof Barlida</span>
         <span class="footer__sub">Lainacherwirt</span>
-      </NuxtLink>
-      <p class="footer__tagline">{{ site.region }}</p>
+      </NuxtLinkLocale>
+      <p class="footer__tagline">{{ t.footer.tagline }}</p>
     </div>
 
     <div class="container footer__inner">
-      <nav class="footer__col" aria-label="Seiten">
-        <p class="footer__heading">Entdecken</p>
+      <nav class="footer__col" :aria-label="t.footer.pages">
+        <p class="footer__heading">{{ t.footer.explore }}</p>
         <ul class="footer__list">
           <li v-for="item in nav" :key="item.to">
-            <NuxtLink :to="item.to">{{ item.label }}</NuxtLink>
+            <NuxtLinkLocale :to="item.to">{{ t.nav[item.key] }}</NuxtLinkLocale>
           </li>
         </ul>
       </nav>
 
       <div class="footer__col">
-        <p class="footer__heading">Besuchen</p>
+        <p class="footer__heading">{{ t.footer.visit }}</p>
         <address class="footer__address">
-          Lainach 80<br />9833 Rangersdorf<br />Kärnten, Österreich
+          {{ site.street }}<br />{{ site.postalCode }} {{ site.locality }}<br />{{ t.ui.region }}
         </address>
       </div>
 
       <div class="footer__col">
-        <p class="footer__heading">Kontakt</p>
+        <p class="footer__heading">{{ t.footer.contact }}</p>
         <ul class="footer__list">
           <li><a :href="site.phoneHref">{{ site.phone }}</a></li>
           <li><a :href="site.emailHref">{{ site.email }}</a></li>
@@ -38,7 +38,7 @@
       </div>
 
       <div class="footer__col">
-        <p class="footer__heading">Folgen</p>
+        <p class="footer__heading">{{ t.footer.follow }}</p>
         <ul class="footer__list">
           <li><a :href="site.social.instagram" target="_blank" rel="noopener">Instagram</a></li>
           <li><a :href="site.social.facebook" target="_blank" rel="noopener">Facebook</a></li>
@@ -48,9 +48,10 @@
 
     <div class="container footer__bottom">
       <p>© {{ year }} Gasthof Barlida · Lainacherwirt</p>
+      <LangSwitcher class="footer__lang" />
       <ul class="footer__legal">
-        <li><NuxtLink to="/kontakt">Impressum</NuxtLink></li>
-        <li><NuxtLink to="/kontakt">Datenschutz</NuxtLink></li>
+        <li><NuxtLinkLocale to="/kontakt">{{ t.footer.imprint }}</NuxtLinkLocale></li>
+        <li><NuxtLinkLocale to="/kontakt">{{ t.footer.privacy }}</NuxtLinkLocale></li>
       </ul>
     </div>
   </footer>
@@ -58,6 +59,8 @@
 
 <script setup lang="ts">
 import { nav, site } from '~/content/site'
+
+const t = useMessages()
 
 const year = new Date().getFullYear()
 </script>

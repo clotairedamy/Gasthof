@@ -1,45 +1,45 @@
 <template>
   <div>
     <PageHero
-      title="Über uns"
+      :title="t.about.title"
       kicker="Gasthof Barlida"
-      lead="Eine Familie, die die Berge, die Natur und die Ruhe liebt."
+      :lead="t.about.lead"
       image="/images/about-2.jpg"
       position="center 40%"
     />
 
     <section class="section" aria-labelledby="family-heading">
       <div class="container about-intro">
-        <p v-reveal class="kicker">Unsere Familie</p>
+        <p v-reveal class="kicker">{{ t.about.familyKicker }}</p>
         <h2 id="family-heading" v-split class="display about-intro__title">
-          Gastfreundschaft, <em>die von Herzen kommt</em>
+          {{ t.about.familyTitleLead }} <em>{{ t.about.familyTitleAccent }}</em>
         </h2>
-        <p v-reveal="100" class="about-intro__lead">{{ about.intro }}</p>
+        <p v-reveal="100" class="about-intro__lead">{{ t.about.intro }}</p>
       </div>
     </section>
 
     <section class="vision section--ink on-dark" aria-labelledby="vision-heading">
       <div v-reveal:image.left class="vision__media">
-        <img :src="asset('/images/about-1.jpg')" alt="Die Gastgeberfamilie vor verschneiten Berggipfeln" width="1200" height="1600" loading="lazy" />
+        <img :src="asset('/images/about-1.jpg')" :alt="t.about.familyImageAlt" width="1200" height="1600" loading="lazy" />
       </div>
       <div class="vision__body">
         <div v-reveal class="vision__inner">
-          <p class="kicker">{{ about.vision.title }}</p>
-          <h2 id="vision-heading" v-split class="vision__title">Ein Ort, an dem man <em>ankommt</em></h2>
-          <p class="vision__text">{{ about.vision.text }}</p>
+          <p class="kicker">{{ t.about.visionKicker }}</p>
+          <h2 id="vision-heading" v-split class="vision__title">{{ t.about.visionTitleLead }} <em>{{ t.about.visionTitleAccent }}</em></h2>
+          <p class="vision__text">{{ t.about.visionText }}</p>
         </div>
       </div>
     </section>
 
-    <section class="section closing" aria-label="Unser Wunsch">
+    <section class="section closing" :aria-label="t.about.closingLabel">
       <div v-reveal class="container closing__inner">
         <BrandMark class="closing__mark" />
         <blockquote class="closing__quote">
-          <p>„{{ about.closing }}“</p>
+          <p><q>{{ t.about.closing }}</q></p>
         </blockquote>
         <div class="closing__actions">
-          <NuxtLink to="/zimmer" class="btn btn--primary">Zimmer entdecken</NuxtLink>
-          <NuxtLink to="/kontakt" class="btn btn--ghost">Kontakt</NuxtLink>
+          <NuxtLinkLocale to="/zimmer" class="btn btn--primary">{{ t.about.roomsCta }}</NuxtLinkLocale>
+          <NuxtLinkLocale to="/kontakt" class="btn btn--ghost">{{ t.ui.contact }}</NuxtLinkLocale>
         </div>
       </div>
     </section>
@@ -47,21 +47,12 @@
 </template>
 
 <script setup lang="ts">
-import { about } from '~/content/about'
+const t = useMessages()
 
-const config = useRuntimeConfig()
-const base = config.public.siteUrl as string
-
-useSeoMeta({
-  title: 'Über uns | Gasthof Barlida',
-  description: about.intro,
-  ogTitle: 'Über uns – Gasthof Barlida',
-  ogDescription: about.intro,
-  ogImage: `${base}/images/about-1.jpg`,
-})
-
-useHead({
-  link: [{ rel: 'canonical', href: `${base}/ueber-uns` }],
+usePageSeo({
+  title: t.value.about.seoTitle,
+  description: t.value.about.intro,
+  image: '/images/about-1.jpg',
 })
 </script>
 

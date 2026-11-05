@@ -2,9 +2,9 @@
   <div v-if="room">
     <PageHero
       :title="room.name"
-      :kicker="room.highlight || 'Zimmer'"
+      :kicker="room.highlight || t.rooms.kickerFallback"
       :lead="room.tagline"
-      :image="roomCover(room).src"
+      :image="cover.src"
     />
 
     <section class="section">
@@ -14,7 +14,7 @@
             <p class="room__text" :class="{ 'room__text--lead': i === 0 }">{{ p }}</p>
           </div>
 
-          <h2 class="room__subtitle">Ausstattung</h2>
+          <h2 class="room__subtitle">{{ t.rooms.features }}</h2>
           <ul class="room__features">
             <li v-for="feature in room.features" :key="feature">
               <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
@@ -25,8 +25,8 @@
           </ul>
 
           <div class="room__cta">
-            <a :href="site.phoneHref" class="btn btn--primary">Jetzt anfragen</a>
-            <NuxtLink to="/zimmer" class="btn btn--ghost">Alle Zimmer</NuxtLink>
+            <a :href="site.phoneHref" class="btn btn--primary">{{ t.rooms.inquire }}</a>
+            <NuxtLinkLocale to="/zimmer" class="btn btn--ghost">{{ t.ui.allRooms }}</NuxtLinkLocale>
           </div>
         </div>
 
@@ -35,7 +35,7 @@
             v-for="(img, i) in room.images"
             :key="i"
             :src="asset(img)"
-            :alt="`${room.name} – Bild ${i + 1}`"
+            :alt="`${room.name} – ${t.rooms.photoAlt} ${i + 1}`"
             :width="i === 0 ? 800 : 480"
             :height="i === 0 ? 600 : 600"
             :loading="i === 0 ? 'eager' : 'lazy'"
@@ -44,46 +44,40 @@
         </div>
         <div v-else class="room__pending on-dark">
           <BrandMark class="room__pending-mark" />
-          <p class="room__pending-title">Fotos folgen in Kürze</p>
-          <p class="room__pending-text">Gerne beschreiben wir Ihnen {{ room.name }} persönlich – rufen Sie uns an.</p>
+          <p class="room__pending-title">{{ t.rooms.pendingTitle }}</p>
+          <p class="room__pending-text">{{ t.rooms.pendingText(room.name) }}</p>
           <a :href="site.phoneHref" class="btn btn--outline-light">{{ site.phone }}</a>
         </div>
       </div>
     </section>
 
     <div class="section section--alt">
-      <RoomSlider :rooms="otherRooms" kicker="Weitere Unterkünfte" title="Das könnte Ihnen auch gefallen" more-to="/zimmer" more-label="Alle Zimmer" />
+      <RoomSlider :rooms="otherRooms" :kicker="t.rooms.otherKicker" :title="t.rooms.otherTitle" more-to="/zimmer" :more-label="t.ui.allRooms" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { getRoom, roomCover, rooms } from '~/content/rooms'
 import { site } from '~/content/site'
 
 const route = useRoute()
+const t = useMessages()
+const rooms = useRooms()
 const slug = route.params.slug as string
-const room = getRoom(slug)
+const room = computed(() => rooms.value.find((r) => r.slug === slug))
 
-if (!room) {
-  throw createError({ statusCode: 404, statusMessage: 'Zimmer nicht gefunden', fatal: true })
+if (!room.value) {
+  throw createError({ statusCode: 404, statusMessage: t.value.rooms.notFound, fatal: true })
 }
 
-const otherRooms = rooms.filter((r) => r.slug !== slug)
+const cover = computed(() => roomCover(room.value!, t.value.rooms.houseAlt))
+const otherRooms = computed(() => rooms.value.filter((r) => r.slug !== slug))
 
-const config = useRuntimeConfig()
-const base = config.public.siteUrl as string
-
-useSeoMeta({
-  title: `${room.name} | Gasthof Barlida`,
-  description: room.description[0],
-  ogTitle: `${room.name} – Gasthof Barlida`,
-  ogDescription: room.tagline,
-  ogImage: `${base}${roomCover(room).src}`,
-})
-
-useHead({
-  link: [{ rel: 'canonical', href: `${base}/zimmer/${room.slug}` }],
+usePageSeo({
+  title: `${room.value.name} | Gasthof Barlida`,
+  description: room.value.description[0]!,
+  ogDescription: room.value.tagline,
+  image: cover.value.src,
 })
 </script>
 

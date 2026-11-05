@@ -24,6 +24,8 @@ jobs:
       # Project pages live under /<repo>/. Drop both when a real domain is set.
       NUXT_APP_BASE_URL: /Gasthof/
       NUXT_PUBLIC_SITE_URL: https://clotairedamy.github.io/Gasthof
+      # Origin only: the i18n module appends the base path itself.
+      NUXT_PUBLIC_I18N_BASE_URL: https://clotairedamy.github.io
       # Not ready for production: every page ships noindex, nofollow.
       NUXT_PUBLIC_INDEXABLE: 'false'
     steps:

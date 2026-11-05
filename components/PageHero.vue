@@ -1,5 +1,5 @@
 <template>
-  <section class="page-hero on-dark" aria-label="Kopfbereich">
+  <section class="page-hero on-dark" :aria-label="t.ui.heroRegion">
     <img class="page-hero__bg" :src="asset(image)" alt="" width="1600" height="1067" fetchpriority="high" :style="{ objectPosition: position }" />
     <div class="page-hero__scrim" aria-hidden="true"></div>
     <div class="container page-hero__content">
@@ -11,6 +11,8 @@
 </template>
 
 <script setup lang="ts">
+const t = useMessages()
+
 withDefaults(
   defineProps<{
     title: string

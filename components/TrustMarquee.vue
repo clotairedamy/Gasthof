@@ -1,5 +1,5 @@
 <template>
-  <section class="marquee on-dark" aria-label="Was uns ausmacht">
+  <section class="marquee on-dark" :aria-label="t.ui.marqueeLabel">
     <div class="marquee__track" :class="{ 'marquee__track--paused': paused }">
       <!-- Four copies so the -50% loop never shows a gap on wide screens. -->
       <ul v-for="copy in 4" :key="copy" class="marquee__list" :aria-hidden="copy > 1 ? 'true' : undefined">
@@ -15,7 +15,7 @@
       :aria-pressed="paused"
       @click="paused = !paused"
     >
-      <span class="sr-only">Laufband anhalten</span>
+      <span class="sr-only">{{ t.ui.pauseMarquee }}</span>
       <svg v-if="!paused" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><rect x="6" y="5" width="4" height="14" /><rect x="14" y="5" width="4" height="14" /></svg>
       <svg v-else viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 5l12 7-12 7z" /></svg>
     </button>
@@ -27,6 +27,7 @@ defineProps<{ items: string[] }>()
 
 // WCAG 2.2.2: anything that moves for more than five seconds can be paused.
 const paused = ref(false)
+const t = useMessages()
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <a href="#main" class="skip-link">Zum Inhalt springen</a>
+    <a href="#main" class="skip-link">{{ t.ui.skipLink }}</a>
     <IntroCurtain />
     <SiteHeader />
     <main id="main" class="site-main" tabindex="-1">
@@ -14,7 +14,5 @@
 </template>
 
 <script setup lang="ts">
-useHead({
-  htmlAttrs: { lang: 'de' },
-})
+const t = useMessages()
 </script>

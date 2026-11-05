@@ -1,27 +1,27 @@
 <template>
   <div>
     <PageHero
-      title="Galerie"
-      kicker="Eindrücke"
-      lead="Ein Blick auf unser Haus, unsere Zimmer und das Leben am Lainacherwirt."
+      :title="t.gallery.title"
+      :kicker="t.gallery.kicker"
+      :lead="t.gallery.lead"
       image="/images/hero.jpg"
       position="center 70%"
     />
 
-    <section class="section" aria-label="Bilder">
+    <section class="section" :aria-label="t.gallery.imagesLabel">
       <div class="container">
         <ul class="gallery">
           <li v-for="(img, i) in gallery" :key="img.src" class="gallery__item">
-            <button type="button" class="gallery__btn" data-cursor="Vergrößern" @click="openAt(i)">
+            <button type="button" class="gallery__btn" :data-cursor="t.ui.cursorEnlarge" @click="openAt(i)">
               <img
                 v-reveal:image="(i % 3) * 100"
                 :src="asset(img.src)"
-                :alt="img.alt"
+                :alt="alt(img.src)"
                 :width="img.tall ? 600 : 900"
                 :height="img.tall ? 800 : 600"
                 loading="lazy"
               />
-              <span class="sr-only">– vergrößern</span>
+              <span class="sr-only">{{ t.gallery.enlarge }}</span>
             </button>
           </li>
         </ul>
@@ -31,29 +31,29 @@
     <dialog
       ref="dialogEl"
       class="lightbox on-dark"
-      aria-label="Bildansicht"
+      :aria-label="t.gallery.viewer"
       @close="current = -1"
       @click.self="close"
       @keydown.left.prevent="step(-1)"
       @keydown.right.prevent="step(1)"
     >
       <figure v-if="image" class="lightbox__figure">
-        <img :src="asset(image.src)" :alt="image.alt" class="lightbox__img" />
+        <img :src="asset(image.src)" :alt="alt(image.src)" class="lightbox__img" />
         <figcaption class="lightbox__caption">
-          <span>{{ image.alt }}</span>
+          <span>{{ alt(image.src) }}</span>
           <span class="lightbox__count">{{ current + 1 }} / {{ gallery.length }}</span>
         </figcaption>
       </figure>
       <button type="button" class="lightbox__btn lightbox__close" @click="close">
-        <span class="sr-only">Schließen</span>
+        <span class="sr-only">{{ t.ui.close }}</span>
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 5l14 14M19 5L5 19" /></svg>
       </button>
       <button type="button" class="lightbox__btn lightbox__prev" @click="step(-1)">
-        <span class="sr-only">Vorheriges Bild</span>
+        <span class="sr-only">{{ t.gallery.previous }}</span>
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 12H4m0 0l6-6m-6 6l6 6" /></svg>
       </button>
       <button type="button" class="lightbox__btn lightbox__next" @click="step(1)">
-        <span class="sr-only">Nächstes Bild</span>
+        <span class="sr-only">{{ t.gallery.next }}</span>
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 12h16m0 0l-6-6m6 6l-6 6" /></svg>
       </button>
     </dialog>
@@ -62,6 +62,9 @@
 
 <script setup lang="ts">
 import { gallery } from '~/content/gallery'
+
+const t = useMessages()
+const alt = useGalleryAlt()
 
 // Native <dialog>: showModal() traps focus, Escape closes it, and focus
 // returns to the thumbnail that opened it.
@@ -82,19 +85,10 @@ function step(direction: 1 | -1) {
   current.value = (current.value + direction + gallery.length) % gallery.length
 }
 
-const config = useRuntimeConfig()
-const base = config.public.siteUrl as string
-
-useSeoMeta({
-  title: 'Galerie | Gasthof Barlida',
-  description:
-    'Impressionen aus dem Gasthof Barlida – Zimmer, Restaurant, Bar, Terrasse und das Leben am Lainacherwirt.',
-  ogTitle: 'Galerie – Gasthof Barlida',
-  ogImage: `${base}/images/hero.jpg`,
-})
-
-useHead({
-  link: [{ rel: 'canonical', href: `${base}/galerie` }],
+usePageSeo({
+  title: t.value.gallery.seoTitle,
+  description: t.value.gallery.seoDescription,
+  image: '/images/hero.jpg',
 })
 </script>
 

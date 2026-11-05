@@ -5,7 +5,7 @@
     <div v-reveal class="container band__content">
       <p v-if="kicker" class="kicker band__kicker">{{ kicker }}</p>
       <p v-split class="band__quote"><slot /></p>
-      <NuxtLink v-if="ctaTo && ctaTo.startsWith('/')" :to="ctaTo" class="btn btn--outline-light">{{ ctaLabel }}</NuxtLink>
+      <NuxtLinkLocale v-if="ctaTo && ctaTo.startsWith('/')" :to="ctaTo" class="btn btn--outline-light">{{ ctaLabel }}</NuxtLinkLocale>
       <a
         v-else-if="ctaTo"
         :href="ctaTo"

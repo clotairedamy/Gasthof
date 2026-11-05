@@ -1,9 +1,9 @@
 <template>
   <div>
     <PageHero
-      title="Unsere Zimmer"
-      kicker="Übernachten"
-      lead="Vom gemütlichen Doppelzimmer bis zum großzügigen Apartment – sechs Unterkünfte für einen erholsamen Aufenthalt in den Bergen."
+      :title="t.rooms.title"
+      :kicker="t.rooms.kicker"
+      :lead="t.rooms.lead"
       image="/images/zimmer-1-1.jpg"
       position="center 65%"
     />
@@ -19,21 +19,13 @@
 </template>
 
 <script setup lang="ts">
-import { rooms } from '~/content/rooms'
+const t = useMessages()
+const rooms = useRooms()
 
-const config = useRuntimeConfig()
-const base = config.public.siteUrl as string
-
-useSeoMeta({
-  title: 'Zimmer & Suiten | Gasthof Barlida',
-  description:
-    'Sechs gemütliche Zimmer, Suiten und Apartments im Gasthof Barlida – Doppelzimmer mit Balkon, Familiensuiten und Apartments mit Gemeinschaftsküche.',
-  ogTitle: 'Zimmer & Suiten – Gasthof Barlida',
-  ogImage: `${base}/images/zimmer-1-1.jpg`,
-})
-
-useHead({
-  link: [{ rel: 'canonical', href: `${base}/zimmer` }],
+usePageSeo({
+  title: t.value.rooms.seoTitle,
+  description: t.value.rooms.seoDescription,
+  image: '/images/zimmer-1-1.jpg',
 })
 </script>
 

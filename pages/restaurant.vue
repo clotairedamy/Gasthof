@@ -1,59 +1,59 @@
 <template>
   <div>
     <PageHero
-      title="Restaurant Lainacherwirt"
-      kicker="Genuss"
-      :lead="restaurant.intro"
+      :title="t.restaurant.name"
+      :kicker="t.restaurant.kicker"
+      :lead="t.restaurant.intro"
       image="/images/restaurant-1.jpg"
     />
 
     <section class="section" aria-labelledby="restaurant-heading">
       <div class="container restaurant">
         <div class="restaurant__body">
-          <p class="kicker">Das Restaurant</p>
-          <h2 id="restaurant-heading" v-split class="restaurant__title">Tradition am Tisch, <em>die Berge vor der Tür</em></h2>
-          <p v-for="(p, i) in restaurant.description" :key="i" class="restaurant__text" :class="{ 'restaurant__text--lead': i === 0 }">{{ p }}</p>
-          <p class="restaurant__text">{{ restaurant.offSeason }}</p>
+          <p class="kicker">{{ t.restaurant.sectionKicker }}</p>
+          <h2 id="restaurant-heading" v-split class="restaurant__title">{{ t.restaurant.titleLead }} <em>{{ t.restaurant.titleAccent }}</em></h2>
+          <p v-for="(p, i) in t.restaurant.description" :key="i" class="restaurant__text" :class="{ 'restaurant__text--lead': i === 0 }">{{ p }}</p>
+          <p class="restaurant__text">{{ t.restaurant.offSeason }}</p>
 
-          <h3 class="restaurant__subtitle">Öffnungszeiten</h3>
+          <h3 class="restaurant__subtitle">{{ t.restaurant.hoursTitle }}</h3>
           <dl class="restaurant__hours">
-            <div v-for="h in restaurant.hours" :key="h.label" class="restaurant__hour">
+            <div v-for="h in t.restaurant.hours" :key="h.label" class="restaurant__hour">
               <dt>{{ h.label }}</dt>
               <dd>{{ h.value }}</dd>
             </div>
           </dl>
 
           <div class="restaurant__cta">
-            <a :href="site.phoneHref" class="btn btn--primary">Tisch reservieren</a>
+            <a :href="site.phoneHref" class="btn btn--primary">{{ t.restaurant.reserve }}</a>
           </div>
         </div>
 
         <div class="restaurant__images">
-          <img v-reveal:image :src="asset('/images/restaurant-5.jpg')" alt="Restaurant Lainacherwirt – Innenansicht" width="1200" height="1600" loading="lazy" />
-          <img v-reveal:image.left="300" :src="asset('/images/restaurant-3.jpg')" alt="Gedeckter Tisch im Restaurant" width="1600" height="1200" loading="lazy" />
+          <img v-reveal:image :src="asset('/images/restaurant-5.jpg')" :alt="t.restaurant.interiorAlt" width="1200" height="1600" loading="lazy" />
+          <img v-reveal:image.left="300" :src="asset('/images/restaurant-3.jpg')" :alt="t.restaurant.tableAlt" width="1600" height="1200" loading="lazy" />
         </div>
       </div>
     </section>
 
     <ImageBand
       image="/images/bar-1.jpg"
-      :label="restaurant.events.title"
-      :kicker="restaurant.events.title"
+      :label="t.restaurant.eventsTitle"
+      :kicker="t.restaurant.eventsTitle"
       :cta-to="site.phoneHref"
-      cta-label="Feier anfragen"
+      :cta-label="t.restaurant.eventsCta"
     >
-      Geburtstage, Familientreffen, Feste – mit persönlichem Menü und herzlichem Service.
+      {{ t.restaurant.eventsQuote }}
     </ImageBand>
 
     <div class="section">
-      <ExperienceTabs :items="highlights" kicker="Mehr entdecken" title="Restaurant, Hausbar & Terrasse" :show-links="false" />
+      <ExperienceTabs :items="highlights" :kicker="t.restaurant.moreKicker" :title="t.home.experienceTitle" :show-links="false" />
     </div>
 
-    <section class="section section--alt" aria-label="Bilder aus dem Restaurant">
+    <section class="section section--alt" :aria-label="t.restaurant.imagesLabel">
       <div class="container">
         <ul class="restaurant__strip">
-          <li v-for="(img, i) in restaurant.images" :key="img">
-            <img v-reveal:image="(i % 3) * 100" :src="asset(img)" :alt="`Restaurant Lainacherwirt – Bild ${i + 1}`" width="600" height="600" loading="lazy" />
+          <li v-for="(img, i) in restaurantImages" :key="img">
+            <img v-reveal:image="(i % 3) * 100" :src="asset(img)" :alt="`${t.restaurant.imageAlt} ${i + 1}`" width="600" height="600" loading="lazy" />
           </li>
         </ul>
       </div>
@@ -62,22 +62,18 @@
 </template>
 
 <script setup lang="ts">
-import { restaurant, highlights } from '~/content/restaurant'
+import { highlightFacts, restaurantImages } from '~/content/restaurant'
 import { site } from '~/content/site'
 
-const config = useRuntimeConfig()
-const base = config.public.siteUrl as string
+const t = useMessages()
+const highlights = computed(() =>
+  highlightFacts.map((fact, i) => ({ ...fact, ...t.value.restaurant.highlights[i]! })),
+)
 
-useSeoMeta({
-  title: 'Restaurant | Gasthof Barlida',
-  description: restaurant.intro,
-  ogTitle: 'Restaurant Lainacherwirt – Gasthof Barlida',
-  ogDescription: restaurant.intro,
-  ogImage: `${base}/images/restaurant-1.jpg`,
-})
-
-useHead({
-  link: [{ rel: 'canonical', href: `${base}/restaurant` }],
+usePageSeo({
+  title: t.value.restaurant.seoTitle,
+  description: t.value.restaurant.intro,
+  image: '/images/restaurant-1.jpg',
 })
 </script>
 
