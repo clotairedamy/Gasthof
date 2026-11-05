@@ -1,0 +1,58 @@
+# Static build of the site, published to GitHub Pages at
+# https://clotairedamy.github.io/Gasthof/ on every push to main.
+# One-time setup: Settings → Pages → Build and deployment → Source: GitHub Actions.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Project pages live under /<repo>/. Drop both when a real domain is set.
+      NUXT_APP_BASE_URL: /Gasthof/
+      NUXT_PUBLIC_SITE_URL: https://clotairedamy.github.io/Gasthof
+      # Not ready for production: every page ships noindex, nofollow.
+      NUXT_PUBLIC_INDEXABLE: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm generate
+      - name: Check the built site
+        run: |
+          mkdir -p /tmp/site && ln -s "$PWD/.output/public" /tmp/site/Gasthof
+          (cd /tmp/site && python3 -m http.server 8099 &) && sleep 1
+          BASE_URL=http://localhost:8099/Gasthof pnpm test
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .output/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

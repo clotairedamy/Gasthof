@@ -1,0 +1,4 @@
+# Pages carry <meta name="robots" content="noindex"> until launch. Crawling
+# stays allowed so search engines can see that directive.
+User-agent: *
+Allow: /

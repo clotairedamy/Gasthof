@@ -1,0 +1,21 @@
+{
+  "name": "gasthof-barlida",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "generate": "nuxt generate",
+    "typecheck": "nuxt typecheck",
+    "test": "node --test \"tests/*.test.mjs\""
+  },
+  "dependencies": {
+    "nuxt": "^3.17.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.3.14"
+  }
+}
