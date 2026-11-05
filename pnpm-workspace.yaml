@@ -1,0 +1,4 @@
+# pnpm 11 refuses to install in CI while a dependency build script is
+# unapproved. esbuild needs its postinstall to fetch the platform binary.
+allowBuilds:
+  esbuild: true

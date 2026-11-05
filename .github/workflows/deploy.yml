@@ -27,11 +27,11 @@ jobs:
       # Not ready for production: every page ships noindex, nofollow.
       NUXT_PUBLIC_INDEXABLE: 'false'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
         with:
           version: 11
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: pnpm
